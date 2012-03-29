@@ -1,7 +1,8 @@
-{ "name": "default"
+{ "name": "jsdoc.info"
 , "version": "0.0.1"
 , "engines": ["node >= 0.4.0"]
 , "main": "server.js"
+, "repository": { "type": "git", "url": "node-js.ru:jsdoc.info.git" }
 , "dependencies":
   { "ejs":              "*"
   , "ejs-ext":          "*"
@@ -9,6 +10,7 @@
   , "railway":          ">= 0.1.6"
   , "jugglingdb":       ">= 0.1.0"
   , "coffee-script":    ">= 1.1.1"
+  , "makedoc":          "*"
   },
   "devDependencies":
   { "nodeunit":         "*"
