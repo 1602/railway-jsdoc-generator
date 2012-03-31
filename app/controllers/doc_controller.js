@@ -26,7 +26,10 @@ action('make', function () {
         md.writeReadme(
             app.root + '/public/' + git + '/index.html',
             readme,
-            {title: params.repo}
+            {
+                title: params.repo,
+                layout: app.root + '/app/views/layouts/doc_layout.html'
+            }
         );
         redirect('/' + git + '/index.html');
     });
@@ -34,8 +37,24 @@ action('make', function () {
     function generate(file) {
         md.generateFile(file, {
             out: app.root + '/public/' + git + '/',
-            git: git
+            git: git,
+            layout: app.root + '/app/views/layouts/doc_layout.html'
         });
     }
+});
+
+action('update', function () {
+    var git = params.user + '/' + params.repo;
+    var projectPath = app.root + '/public/' + git;
+    if (!path.existsSync(projectPath)) {
+        return redirect('/' + git);
+    }
+    fs.readdirSync(projectPath).forEach(function (file) {
+        fs.unlinkSync(projectPath + '/' + file);
+    });
+    try {
+        fs.rmdirSync(projectPath);
+    } catch (e) {console.log(e);}
+    redirect('/' + git);
 });
 

@@ -1,0 +1,10 @@
+development:
+  baseURL: 'http://localhost:3000/'
+  github:
+    clientID: "a7576b8de47934948338"
+    secret: "d8107d7cd75fc8ee0f02cf1f38b3af065c3ec2ac"
+production:
+  baseURL: 'http://makedoc.node-js.ru/'
+  github:
+    clientID: "e5f5ded8e9ba19c1765b"
+    secret: "a808446c3d880195864f69a05e466caeb4bdc46b"

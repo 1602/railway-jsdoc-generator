@@ -11,6 +11,10 @@
   , "jugglingdb":       ">= 0.1.0"
   , "coffee-script":    ">= 1.1.1"
   , "makedoc":          "*"
+  , "passport":         "*"
+  , "railway-passport": "*"
+  , "passport-github":  "*"
+  , "redis":            "*"
   },
   "devDependencies":
   { "nodeunit":         "*"
