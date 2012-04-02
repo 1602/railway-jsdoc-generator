@@ -31,7 +31,7 @@ action('make', function () {
 
     p.download('lib', function () {
         p.makeDocumentation();
-        makePic(git);
+        // makePic(git);
         redirect('/' + git + '/');
     });
 
@@ -60,7 +60,7 @@ action('update', function () {
         } else {
             redirect('/' + git);
         }
-        makePic(git);
+        // makePic(git);
     });
 });
 
