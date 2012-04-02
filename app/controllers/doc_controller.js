@@ -19,7 +19,7 @@ action('make', function () {
     p.title = params.repo;
     p.repo = git;
     p.out = app.root + '/public/' + git + '/';
-    p.layoutHTML = fs.readFileSync(app.root + '/app/views/layouts/doc_layout.html').toString();
+    p.layoutHTML = getDocLayout();
 
     if (!path.existsSync(app.root + '/public/' + git)) {
         fs.mkdirSync(app.root + '/public/' + git);
