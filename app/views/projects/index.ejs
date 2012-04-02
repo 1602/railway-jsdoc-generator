@@ -1,4 +1,4 @@
-<div class="page-header"><h1>My Projects</h1></div>
+<div class="page-header"><h1>JavaScript Projects owned by <%- link_to(request.params.user, 'https://github.com/'+ request.params.user) %></h1></div>
 
 <table class="table table-bordered">
   <thead>
@@ -11,15 +11,64 @@
   <tbody>
   <% projects.forEach(function (project) { %>
     <tr>
-      <td> <h6><%- project.name %></h6>Watchers: <%- project.watchers %>, forks: <%- project.forks %> </td>
+      <td>
+        <h6>
+          <%- project.name %>
+          <a href="<%- project.path %>"><i class="icon-share-alt"></i></a>
+        </h6>Watchers: <%- project.watchers %>, forks: <%- project.forks %>
+      </td>
+      <td id="<%- project.path.replace(/[^a-z]/gi, '_') %>">
       <% if (project.stats) { %>
-      <td> <strong>Coverage <%- project.stats.coverage %>%</strong><br/>Classes: <%- project.stats.classes %>, packages: <%- project.stats.packages %>, methods: <%- project.stats.totalMethods %> </td>
-      <td> <%- link_to('<i class="icon-refresh icon-white"></i> Update docs', project.path + '/update', {class: 'btn btn-inverse'}) %> </td>
+        <strong>Coverage <%- project.stats.coverage || 0 %>%</strong><br/>
+        Classes: <%- project.stats.classes %>,
+        packages: <%- project.stats.packages %>,
+        methods: <%- project.stats.totalMethods %>
       <% } else { %>
-        <td> <span class="label">not generated</span> </td>
-        <td> <%- link_to('<i class="icon-plus"></i> Generate docs', project.path, {class: 'btn'}) %> </td>
+        <span class="label">not generated</span>
       <% } %>
+      </td>
+      <td>
+        <%- link_to(
+        project.stats ?
+        '<i class="icon-refresh icon-white"></i> Update docs' :
+        '<i class="icon-plus"></i> Generate docs',
+        project.path + '/update.json', {
+        class: project.stats ? 'btn btn-inverse' : 'btn',
+        'data-remote': 'true',
+        'data-method': 'POST',
+        'jsonp': 'handleStats("' + project.path.replace(/[^a-z]/gi, '_') + '")'
+        }) %>
+      </td>
     </tr>
   <% }); %>
   </tbody>
 </table>
+
+<script>
+  function handleStats(el) {
+    return function (data) {
+      $('#' + el).html(
+        '<strong>Coverage ' + (data.coverage || 0) +
+        '%</strong><br/>Classes: ' + data.classes +
+        ', packages: ' + data.packages +
+        ', methods: ' + data.totalMethods
+      ).next('td').find('a').toggleClass('disabled');
+    };
+  }
+
+  $(function () {
+    $('a[data-remote]')
+    .live('ajax:loading', function () {
+      $(this).addClass('disabled');
+    })
+    .live('ajax:success', function () {
+      if (!$(this).hasClass('btn-inverse')) {
+        $(this).addClass('btn-inverse');
+        $(this).html(
+        '<i class="icon-refresh icon-white"></i> Update docs'
+        );
+      }
+      $(this).removeClass('disabled');
+    });
+  });
+</script>

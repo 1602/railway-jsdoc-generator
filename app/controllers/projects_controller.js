@@ -3,15 +3,18 @@ var fs = require('fs');
 
 load('application');
 
-before(use('requireUser'));
+before(use('requireUser'), {only: 'whoami'});
+
+action(function whoami() {
+    redirect('/' + req.user.username);
+});
 
 action(function index() {
-    console.log(app.models.Media);
-    req.user.projects(function (err, projects) {
+    User.projects(req.params.user, function (err, projects) {
         if (projects) {
             var pros = [];
             projects.forEach(function (project) {
-                var projPath = req.user.username + '/' + project.name;
+                var projPath = req.params.user + '/' + project.name;
                 var projectStatsFile = app.root + '/public/' + projPath + '/stats.json';
                 if (project.language === 'JavaScript') {
                     project.path = '/' + projPath;

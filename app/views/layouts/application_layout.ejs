@@ -2,9 +2,12 @@
 <html lang="en">
     <head>
         <title><%= title %></title>
-        <%- stylesheet_link_tag('bootstrap', 'style', 'bootstrap-responsive') %>
+        <%- stylesheet_link_tag('bootstrap', 'style') %>
         <%- javascript_include_tag('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'bootstrap', 'rails', 'application') %>
         <%- csrf_meta_tag() %>
+        <style>
+          .navbar .container { width: 940px;}
+        </style>
     </head>
     <body>
         <div class="navbar">
@@ -16,6 +19,15 @@
         </div>
     
         <div class="container">
+
+          <ul class="breadcrumb">
+            <li>
+              <a href="/">Home</a>
+              <span class="divider">/</span>
+            </li>
+            <li class="active"><%- request.params.user %></li>
+          </ul>
+
             <% var flash = request.flash('info').pop(); if (flash) { %>
                 <div class="alert alert-info">
                     <a class="close" data-dismiss="alert">×</a>
