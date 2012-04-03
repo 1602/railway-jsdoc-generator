@@ -1,57 +1,62 @@
 <div class="page-header"><h1>JavaScript Projects owned by <%- link_to(request.params.user, 'https://github.com/'+ request.params.user) %></h1></div>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% projects.forEach(function (project) { %>
-    <tr>
-      <td>
-        <h6>
-          <%- project.name %>
-          <a href="<%- project.path %>"><i class="icon-share-alt"></i></a>
-        </h6>Watchers: <%- project.watchers %>, forks: <%- project.forks %>
-      </td>
-      <td id="<%- project.path.replace(/[^a-z]/gi, '_') %>">
-      <% if (project.stats) { %>
-        <strong>Coverage <%- project.stats.coverage || 0 %>%</strong><br/>
-        Classes: <%- project.stats.classes %>,
-        packages: <%- project.stats.packages %>,
-        methods: <%- project.stats.totalMethods %>
-      <% } else { %>
-        <span class="label">not generated</span>
-      <% } %>
-      </td>
-      <td>
-        <%- link_to(
-        project.stats ?
-        '<i class="icon-refresh icon-white"></i> Update docs' :
-        '<i class="icon-plus"></i> Generate docs',
-        project.path + '/update.json', {
-        class: project.stats ? 'btn btn-inverse' : 'btn',
-        'data-remote': 'true',
-        'data-method': 'POST',
-        'jsonp': 'handleStats("' + project.path.replace(/[^a-z]/gi, '_') + '")'
-        }) %>
-      </td>
-    </tr>
-  <% }); %>
-  </tbody>
-</table>
+<% if (projects.length) { %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% projects.forEach(function (project) { %>
+      <tr>
+        <td>
+          <h6>
+            <a href="<%- project.path %>"><%- project.name %></a>
+          </h6>Watchers: <%- project.watchers %>, forks: <%- project.forks %>
+        </td>
+        <td id="<%- project.path.replace(/[^a-z]/gi, '_') %>">
+        <% if (project.stats) { %>
+          <strong>Docs coverage <%- project.stats.coverage || 0 %>%</strong><br/>
+          Classes: <%- project.stats.classes %>,
+          packages: <%- project.stats.packages %>,
+          methods: <%- project.stats.totalMethods %>,
+          lines: <%- project.stats.totalCodeLines %>
+        <% } else { %>
+          <span class="label">not generated</span>
+        <% } %>
+        </td>
+        <td>
+          <%- link_to(
+          project.stats ?
+          '<i class="icon-refresh icon-white"></i> Update docs' :
+          '<i class="icon-plus"></i> Generate docs',
+          project.path + '/update.json', {
+          class: project.stats ? 'btn btn-inverse' : 'btn',
+          'data-remote': 'true',
+          'data-method': 'POST',
+          'jsonp': 'handleStats("' + project.path.replace(/[^a-z]/gi, '_') + '")'
+          }) %>
+        </td>
+      </tr>
+    <% }); %>
+    </tbody>
+  </table>
+<% } else { %>
+<div class="alert"><strong class="warning">WTF?</strong> I don't see any javascript projects for github user "<%= request.params.user %>".</div>
+<% } %>
 
 <script>
   function handleStats(el) {
     return function (data) {
       $('#' + el).html(
-        '<strong>Coverage ' + (data.coverage || 0) +
+        '<strong>Docs coverage ' + (data.coverage || 0) +
         '%</strong><br/>Classes: ' + data.classes +
         ', packages: ' + data.packages +
-        ', methods: ' + data.totalMethods
+        ', methods: ' + data.totalMethods + 
+        ', lines: ' + data.totalCodeLines
       ).next('td').find('a').toggleClass('disabled');
     };
   }
@@ -72,3 +77,4 @@
     });
   });
 </script>
+

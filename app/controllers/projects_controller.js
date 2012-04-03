@@ -13,7 +13,7 @@ action(function index() {
     User.projects(req.params.user, function (err, projects) {
         if (projects) {
             var pros = [];
-            projects.forEach(function (project) {
+            projects.forEach && projects.forEach(function (project) {
                 var projPath = req.params.user + '/' + project.name;
                 var projectStatsFile = app.root + '/public/' + projPath + '/stats.json';
                 if (project.language === 'JavaScript') {
@@ -25,7 +25,7 @@ action(function index() {
                 }
             });
             render({
-                title: "My Projects",
+                title: req.params.user + "'s projects",
                 projects: pros.sort(byWatchers)
             });
         }
