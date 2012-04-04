@@ -5,3 +5,9 @@ define('User', function () {
     property('avatar');
 });
 
+define('ProjectStatsHistory', function () {
+    property('repo');
+    property('stats');
+    property('updatedAt', Number);
+});
+

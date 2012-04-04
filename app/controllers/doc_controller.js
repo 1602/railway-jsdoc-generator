@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var Project = require('makedoc').Project;
 
 load('application');
 
@@ -15,11 +14,6 @@ skipBeforeFilter('protect from forgery');
 
 action('make', function () {
     var git = params.user + '/' + params.repo;
-    var p = new Project;
-    p.title = params.repo;
-    p.repo = git;
-    p.out = app.root + '/public/' + git + '/';
-    p.layoutHTML = getDocLayout();
 
     if (!path.existsSync(app.root + '/public/' + git)) {
         fs.mkdirSync(app.root + '/public/' + git);
@@ -29,12 +23,14 @@ action('make', function () {
         }, 1000);
     }
 
-    p.download('lib', function () {
-        p.makeDocumentation();
-        // makePic(git);
-        redirect('/' + git + '/');
+    var r = new Repository(git);
+    r.generageDocumentation(function (stats) {
+        if (req.params.format === 'json') {
+            send(stats);
+        } else {
+            redirect('/' + git + '/');
+        }
     });
-
 });
 
 action('update', function () {
@@ -47,29 +43,15 @@ action('update', function () {
         fs.unlinkSync(projectPath + '/' + file);
     });
 
-    var p = new Project;
-    p.title = params.repo;
-    p.repo = git;
-    p.out = app.root + '/public/' + git + '/';
-    p.layoutHTML = getDocLayout();
-    p.download('lib', function () {
-        p.makeDocumentation();
+    var r = new Repository(git);
+    r.generageDocumentation(function (stats) {
         if (req.params.format === 'json') {
-            redirect('/' + git + '/stats.json');
-            // send(fs.readFileSync(app.root + '/public/' + git + '/stats.json'));
+            send(stats);
         } else {
-            redirect('/' + git);
+            redirect('/' + git + '/');
         }
-        // makePic(git);
     });
 });
-
-function getDocLayout() {
-    return fs.readFileSync(app.root + '/app/views/layouts/doc_layout.html')
-    .toString()
-    .replace(/PROJECT OWNER/g, params.user)
-    .replace(/PROJECT NAME/g, params.repo);
-}
 
 function makePic(git) {
     var dirName = app.root + '/public/' + git;

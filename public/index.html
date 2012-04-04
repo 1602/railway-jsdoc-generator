@@ -1,55 +1,115 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Make doc - jsdoc documentation generator</title>
-    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+    <title>JSDoc.info - documentation generator for Node.JS projects</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
     <meta name="viewport" content="width=500, initial-scale=0.5">
-    <meta name="description" content="Make doc - jsdoc documentation generator for NodeJS and javascript projects build on RailwayJS and Bootstrap" >
-    <meta name="keywords" content="jsdoc, nodejs, javascript, railwayjs, documentation, bootstrap, generator" >
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-    <script type="text/javascript" src="/javascripts/rails.js"></script>
+    <meta name="description" content="JSDoc.info - documentation generator for NodeJS and javascript projects build on RailwayJS and Bootstrap" >
+    <meta name="keywords" content="jsdoc, makedoc, nodejs, javascript, railwayjs, documentation, bootstrap, generator" >
   </head>
   <body style="margin-top: 100px;">
     <div class="container">
-      <div class="hero-unit">
-        <h1>Makedoc!</h1>
-        <p>JSDoc-nodejs-friendly documentation generator</p>
-        <p>
-          - How can I get my documentation?<br/>
-          - Just go to http://makedoc.node-js.ru/yourgithubname/yourproject
-        </p>
-        <form onsubmit="return calcUrl();" id="formGitUrl" action="#">
-          <a class="btn btn-primary btn-large" style="margin-left: 10px;" onclick="return calcUrl();">Show me documentation</a>
-          or
-          <a class="btn btn-large" style="margin-left: 0px;" href="/my-own-projects">Manage your projects</a>
-          <div class="input-prepend" style="float: left;">
-            <span class="add-on">https://github.com/</span>
-            <input class="span4" id="prependedInput" size="40" type="text">
+      <div class="row">
+
+        <div class="span9">
+          <div class="hero-unit">
+            <h1>JSDoc.info</h1>
+            <p>Documentation generator for Node.JS projects</p>
+            <p>
+              - How can I get documentation for https://github.com/user/project?<br/>
+              - Just go to http://jsdoc.info/user/project
+            </p>
+            <form onsubmit="return calcUrl();" id="formGitUrl" action="#">
+              <div class="input-prepend">
+                <span class="add-on">https://github.com/</span>
+                <input class="span2" id="prependedInput" placeholder="user/project" size="40" type="text">
+              </div>
+              <a class="btn btn-primary btn-large" onclick="return calcUrl();">Show me documentation</a>
+              or
+              <a class="btn btn-large" href="/my-own-projects">Manage my projects</a>
+            </form>
           </div>
-        </form>
-      </div>
-      <footer>
-      Built with <a href="http://railwayjs.com">RailwayJS</a> &amp; <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a><br/>
-      This is <strong>beta</strong>.<br/>
-      It's an opensource project, so if you want to help us, you can <a href="https://github.com/1602/railway-jsdoc-generator">contribute</a>, <a href="#" onclick="$('#donation-form').show(); return false;">donate</a> or just tweet your feedback to author: <a href="https://twitter.com/1602">@1602</a>.<br/>
-      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="display: none;" id="donation-form">
-        <div style"text-align: center">
-          <input type="hidden" name="cmd" value="_s-xclick">
-          <input type="hidden" name="hosted_button_id" value="ERVGVXKYSKYX6">
-          <input type="image" style="width: 74px; height: 21px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-          <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+
+          <footer>
+          Built with <a href="http://railwayjs.com">RailwayJS</a> &amp; <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a><br/>
+          This is <strong>beta</strong>.<br/>
+          It's an opensource project, so if you want to help, you can <a href="https://github.com/1602/railway-jsdoc-generator">contribute</a>, <a href="#" onclick="$('#donation-form').show(); return false;">donate</a> or just tweet your feedback to <a href="https://twitter.com/1602">author</a>.<br/>
+          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="display: none;" id="donation-form">
+            <div style"text-align: center">
+              <input type="hidden" name="cmd" value="_s-xclick">
+              <input type="hidden" name="hosted_button_id" value="ERVGVXKYSKYX6">
+              <input type="image" style="width: 74px; height: 21px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+              <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </div>
+          </form>
+          </footer>
+
         </div>
-      </form>
-      </footer>
-     </div>
-   </body>
-   <script>
-     function calcUrl() {
-     location.href = '/' + $('#prependedInput').val();
-     return false;
-     }
-   </script>
-    <script type="text/javascript">
+        <div class="span3" style="display: none">
+          <h3>Recent projects</h3>
+          <div id="recent-projects">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </body>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/javascripts/rails.js"></script>
+  <script>
+    function calcUrl() {
+      location.href = '/' + $('#prependedInput').val();
+      return false;
+    }
+  </script>
+  <style>
+    .report {
+      padding: 10px;
+      text-align: left;
+    }
+    .report h4 {
+      text-align: left;
+    }
+  </style>
+  <script>
+    $(function () {
+      $.getJSON('/recent-projects.json', function (data) {
+        $('#recent-projects').html(buildList(data)).parent().fadeIn();
+      });
+    });
+
+    function buildList(projects) {
+      var html = '';
+      $(projects).each(function () {
+        var stats = JSON.parse(this.stats);
+        if (!stats.coverage) return;
+        html += '<div class="report">';
+        html += '<h4><a href="/' + this.repo + '">' + this.repo + '</a></h4>';
+        html += 'Doc coverage:<br/><span style="font-size:30px; line-height: 35px;">' + stats.coverage + '%</span><br/>';
+        html += 'Updated ' + timeAgo(this.updatedAt) + ' ago';
+        html += '</div>';
+      });
+      return html;
+    }
+
+    function timeAgo(ts) {
+      var diff = Math.round((Date.now() - ts) / 1000);
+      console.log(diff);
+      if (diff < 60) return plural(diff, 'second');
+      if (diff < 3600) return plural(diff / 60, 'minute');
+      if (diff < 86400) return plural(diff / 3600, 'hour');
+      return plural(diff / 86400, 'day');
+    }
+
+    function plural(x, word) {
+      x = Math.round(x);
+      if (x !== 0) return x + ' ' + word + 's';
+      return x + ' ' + word;
+    }
+  </script>
+
+  <script type="text/javascript">
 
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-30614813-1']);
@@ -62,5 +122,5 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
-    </script>
- </html>
+  </script>
+</html>

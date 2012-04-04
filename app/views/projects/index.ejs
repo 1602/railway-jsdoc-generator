@@ -1,4 +1,4 @@
-<div class="page-header"><h1>JavaScript Projects owned by <%- link_to(request.params.user, 'https://github.com/'+ request.params.user) %></h1></div>
+<div class="page-header"><h1>JavaScript Projects owned by <%- link_to(user, 'https://github.com/'+ user) %></h1></div>
 
 <% if (projects.length) { %>
   <table class="table table-bordered">
@@ -17,7 +17,7 @@
             <a href="<%- project.path %>"><%- project.name %></a>
           </h6>Watchers: <%- project.watchers %>, forks: <%- project.forks %>
         </td>
-        <td id="<%- project.path.replace(/[^a-z]/gi, '_') %>">
+        <td id="<%- project.name.replace(/[^a-z]/gi, '_') %>">
         <% if (project.stats) { %>
           <strong>Docs coverage <%- project.stats.coverage || 0 %>%</strong><br/>
           Classes: <%- project.stats.classes %>,
@@ -37,7 +37,7 @@
           class: project.stats ? 'btn btn-inverse' : 'btn',
           'data-remote': 'true',
           'data-method': 'POST',
-          'jsonp': 'handleStats("' + project.path.replace(/[^a-z]/gi, '_') + '")'
+          'jsonp': 'handleStats("' + project.name.replace(/[^a-z]/gi, '_') + '")'
           }) %>
         </td>
       </tr>
@@ -45,7 +45,7 @@
     </tbody>
   </table>
 <% } else { %>
-<div class="alert"><strong class="warning">WTF?</strong> I don't see any javascript projects for github user "<%= request.params.user %>".</div>
+<div class="alert"><strong class="warning">WTF?</strong> I don't see any javascript projects for github user <%- link_to(user, 'https://github.com/' + user) %>.</div>
 <% } %>
 
 <script>
@@ -57,13 +57,13 @@
         ', packages: ' + data.packages +
         ', methods: ' + data.totalMethods + 
         ', lines: ' + data.codeLinesTotal
-      ).next('td').find('a').toggleClass('disabled');
+      );
     };
   }
 
   $(function () {
     $('a[data-remote]')
-    .live('ajax:loading', function () {
+    .live('ajax:before', function () {
       $(this).addClass('disabled');
     })
     .live('ajax:success', function () {

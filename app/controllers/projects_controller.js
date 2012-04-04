@@ -10,29 +10,19 @@ action(function whoami() {
 });
 
 action(function index() {
-    User.projects(req.params.user, function (err, projects) {
-        if (projects) {
-            var pros = [];
-            projects.forEach && projects.forEach(function (project) {
-                var projPath = req.params.user + '/' + project.name;
-                var projectStatsFile = app.root + '/public/' + projPath + '/stats.json';
-                if (project.language === 'JavaScript') {
-                    project.path = '/' + projPath;
-                    if (path.existsSync(projectStatsFile)) {
-                        project.stats = JSON.parse(fs.readFileSync(projectStatsFile).toString());
-                    }
-                    pros.push(project);
-                }
-            });
-            render({
-                title: req.params.user + "'s projects",
-                projects: pros.sort(byWatchers)
-            });
-        }
+    var user = this.user = req.params.user;
+    this.title = user + "'s projects";
+    User.projectsWithStats(user, function (err, projects) {
+        render({ projects: projects });
     });
+});
 
-    function byWatchers(p1, p2) {
-        return p2.watchers - p1.watchers;
-    }
+action(function recent() {
+    ProjectStatsHistory.all({
+        limit: 5,
+        order: 'id DESC'
+    }, function (err, projects) {
+        send(projects);
+    });
 });
 

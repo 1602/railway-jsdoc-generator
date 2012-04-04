@@ -3,6 +3,7 @@
     <head>
         <title><%= title %></title>
         <%- stylesheet_link_tag('bootstrap', 'style') %>
+        <%- javascript_include_tag('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'bootstrap', 'rails', 'application') %>
         <%- csrf_meta_tag() %>
         <style>
           .navbar .container { width: 940px;}
@@ -49,7 +50,6 @@
             </footer>
         </div>
     </body>
-    <%- javascript_include_tag('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'bootstrap', 'rails', 'application') %>
     <script type="text/javascript">
 
       var _gaq = _gaq || [];
