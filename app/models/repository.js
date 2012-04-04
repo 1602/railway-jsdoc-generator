@@ -18,7 +18,7 @@ Repository.prototype.generageDocumentation = function (cb) {
     p.layoutHTML = this.getDocLayout();
     p.download('lib', function () {
         p.makeDocumentation();
-        if (p.stats.coverage > 5) {
+        if (p.stats.coverage > 2) {
             ProjectStatsHistory.create({
                 repo: p.repo,
                 stats: JSON.stringify(p.stats),
@@ -33,6 +33,6 @@ Repository.prototype.getDocLayout = function getDocLayout() {
     return fs.readFileSync(app.root + '/app/views/layouts/doc_layout.html')
         .toString()
         .replace(/PROJECT OWNER/g, this.user)
-        .replace(/PROJECT NAME/g, this.repo);
+        .replace(/PROJECT NAME/g, this.title);
 };
 
