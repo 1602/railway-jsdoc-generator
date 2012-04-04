@@ -23,7 +23,7 @@
           Classes: <%- project.stats.classes %>,
           packages: <%- project.stats.packages %>,
           methods: <%- project.stats.totalMethods %>,
-          lines: <%- project.stats.totalCodeLines %>
+          lines: <%- project.stats.codeLinesTotal %>
         <% } else { %>
           <span class="label">not generated</span>
         <% } %>
@@ -56,7 +56,7 @@
         '%</strong><br/>Classes: ' + data.classes +
         ', packages: ' + data.packages +
         ', methods: ' + data.totalMethods + 
-        ', lines: ' + data.totalCodeLines
+        ', lines: ' + data.codeLinesTotal
       ).next('td').find('a').toggleClass('disabled');
     };
   }
